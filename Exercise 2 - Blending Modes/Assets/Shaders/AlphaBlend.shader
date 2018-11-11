@@ -1,14 +1,15 @@
-﻿Shader "2D Shaders/EndlessScrollerBackground"
+﻿Shader "2D Shaders/AlphaBlend"
 {
     Properties
     {
         _MainTex ( "Main Texture", 2D ) = "white" {}
-		Speed	("Speed",	Range(0,6))	=	0.04
-		//Speed ( "Speed", float) = 0.5
     }
 
     SubShader
     {
+        Blend	SrcAlpha	OneMinusSrcAlpha
+		BlendOp	Add
+
         Pass
         {
             CGPROGRAM
@@ -28,21 +29,18 @@
             };
 
             sampler2D _MainTex;
-			float Speed;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.position = UnityObjectToClipPos(v.position);
-                o.uv = v.uv + float2(_Time.y * Speed, 0.0);
+                o.uv = v.uv;
                 return o;
             }
             
             fixed4 frag (v2f i) : SV_Target
             {
-				float2 displacedUV = i.uv;
-				//displacedUV.x = displacedUV.x + _Time.y * Speed;
-                fixed4 col = tex2D(_MainTex, displacedUV);
+                fixed4 col = tex2D(_MainTex, i.uv);
                 return col;
             }
 

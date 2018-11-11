@@ -9,10 +9,17 @@
 		//Blend Off
 		//Blend One One //this refers to -> final_color	=	my_color	*	SrcFactor	+	screen_color	*	DstFactor
 		//https://docs.unity3d.com/Manual/SL-Blend.html
-		Blend	SrcColor	One
-
-		BlendOp	Sub 
-
+		//Blend	SrcColor	One
+		Blend	SrcAlpha	OneMinusSrcAlpha //now with the alpha the formula is -> FinalColor	=	my_color	*	myAlpha	+	screen_color	*	(1	-	myAlpha)
+		
+		//Blend DstColor Zero // Multiplicative
+		BlendOp	Add 
+		
+		Tags	{
+			"Queue"	=	"Transparent"
+			"RenderType"="Transparent"
+		}
+		
 		Pass
 		{
 			CGPROGRAM
